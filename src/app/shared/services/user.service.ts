@@ -23,7 +23,7 @@ export class UserService {
         this.isAuthenticatedSubject.next(true);
     }
 
-    attemptAuth(type, credentials): Observable<user> {
+    attemptAuth(type, credentials): Observable<User> {
         let route = (type === 'login') ? '/login' : '';
         return this.apiService.post('/users' + route, {
             user: credentials

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Errors, UserService } from '../shared';
 
 @Component({
     selector: 'auth-page',
@@ -12,8 +13,9 @@ export class AuthComponent implements OnInit {
     title: string;
     isSubmitting: boolean = false;
     authForm: FormGroup;
+    errors: Errors = new Errors();
 
-    constructor(private route: ActivatedRoute, private fb: FormBuilder) {
+    constructor(private route: ActivatedRoute, private fb: FormBuilder, private userService: UserService, private router: Router) {
         this.authForm = this.fb.group({
             'email': ['', Validators.required],
             'password': ['', Validators.required]
@@ -32,6 +34,13 @@ export class AuthComponent implements OnInit {
 
     submitForm() {
         this.isSubmitting = true;
+        this.errors = new Errors();
         let credentials = this.authForm.value;
+        this.userService.attemptAuth(this.authType, credentials).subscribe(data => {
+            this.router.navigateByUrl('/')
+        }, err => {
+            this.errors = err;
+            this.isSubmitting = false;
+        });
     }
 }
