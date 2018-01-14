@@ -8,10 +8,10 @@
                     <a [routerLink]="['/register']" *ngIf="authType === 'login'">Need an account?</a>
                 </p>
                 <list-errors [errors]="errors"></list-errors>
-                <form [formGroup]="authForm" (ngSubmit)="submitForm()">
+                <form [formGroup]="authForm" (ngSubmit)="submitForm()" novalidate>
                     <fieldset [disabled]="isSubmitting">
-                        <fieldset class="form-group">
-                            <input type="text" formControlName="username" placeholder="username" class="form-control form-control-lg" *ngIf="authType === 'register'">
+                        <fieldset class="form-group" *ngIf="authType === 'register'">
+                            <input type="text" formControlName="username" placeholder="username" class="form-control form-control-lg">
                         </fieldset>
                         <fieldset class="form-group">
                             <input type="text" formControlName="email" placeholder="Email" class="form-control form-control-lg">
