@@ -18,5 +18,22 @@ export class UserService {
 
     constructor(private http: Http, private apiService: ApiService) { }
 
-    setAuth
+    setAuth(user: User) {
+        this.currentUserSubject.next(user);
+        this.isAuthenticatedSubject.next(true);
+    }
+
+    attemptAuth(type, credentials): Observable<user> {
+        let route = (type === 'login') ? '/login' : '';
+        return this.apiService.post('/users' + route, {
+            user: credentials
+        }).map(data => {
+            this.setAuth(data.user);
+            return data;
+        });
+    }
+
+    getCurrentUser(): User {
+        return this.currentUserSubject.value;
+    }
 }
